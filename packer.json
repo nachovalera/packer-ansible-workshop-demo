@@ -1,0 +1,29 @@
+{
+    "variables": {
+        "aws_profile": "{{env `AWS_PROFILE`}}"
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "profile": "{{ user `aws_profile`}}",
+            "region": "eu-west-1",
+            "source_ami": "ami-1b791862",
+            "instance_type": "t2.medium",
+            "ssh_username": "ubuntu",
+            "ami_name": "packer_ansible_ami_workshop_demo-{{timestamp}}",
+            "tags": {
+                "Name": "workshop_demo"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "./init.sh"
+        },
+        {
+            "type": "ansible",
+            "playbook_file": "./playbook.yml"
+        }
+    ]
+}
